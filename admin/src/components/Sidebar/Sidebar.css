@@ -1,0 +1,101 @@
+/* Sidebar Styling */
+.sidebar {
+    width: 18%;
+    min-height: 100vh;
+    background-color: var(--sidebar-bg); /* Background color */
+    border: 1.5px solid #a9a9a9;
+    border-top: 0;
+    font-size: max(1vw, 10px);
+    box-shadow: 2px 4px 10px rgba(0, 0, 0, 0.1);
+    transition: width 0.3s ease, background-color 0.3s ease;
+}
+
+.sidebar:hover {
+    background-color: var(--sidebar-hover-bg); /* Hover background */
+}
+
+.sidebar-options {
+    padding-top: 50px;
+    padding-left: 20%;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.sidebar-option {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    border: 1px solid #a9a9a9;
+    border-right: 0;
+    padding: 12px 15px;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    background-color: var(--sidebar-option-bg); /* Default background */
+}
+
+.sidebar-option:hover {
+    background-color: var(--sidebar-option-hover-bg); /* Hover color */
+    box-shadow: 2px 4px 8px rgba(0, 0, 0, 0.1); /* Hover shadow */
+}
+
+.sidebar-option.active {
+    background-color: var(--sidebar-active-bg);
+    border-color: var(--sidebar-active-border-color); /* Active color */
+}
+
+.sidebar-option.active p {
+    color: var(--active-text-color); /* Change text color for active option */
+}
+
+/* Icon Styles */
+.sidebar-option .icon {
+    width: 20px;
+    height: 20px;
+    transition: transform 0.3s ease;
+}
+
+.sidebar-option:hover .icon {
+    transform: scale(1.1); /* Slight scale on hover for icons */
+}
+
+/* Media Query for Smaller Screens */
+@media (max-width: 900px) {
+    .sidebar {
+        width: 60px; /* Make sidebar more compact on mobile */
+        transition: width 0.3s ease;
+    }
+
+    .sidebar-option {
+        padding: 12px;
+    }
+
+    .sidebar-option p {
+        display: none; /* Hide text on small screens */
+    }
+
+    .sidebar-option.icon-only {
+        justify-content: center;
+    }
+}
+
+/* Dynamic Sidebar Background for Light/Dark Mode */
+:root {
+    --sidebar-bg: #121212; /* Dark mode background */
+    --sidebar-hover-bg: #333333; /* Hover background for dark mode */
+    --sidebar-option-bg: #1e1e1e; /* Default option background */
+    --sidebar-active-bg: #ff6347; /* Active option background */
+    --sidebar-active-border-color: #ff4500; /* Active option border color */
+    --active-text-color: #ffffff; /* Text color for active option */
+}
+
+.lightcolors {
+    --sidebar-bg: #ffffff; /* Light mode background */
+    --sidebar-hover-bg: #f0f0f0; /* Hover background for light mode */
+    --sidebar-option-bg: #f9f9f9; /* Default option background */
+    --sidebar-active-bg: #ffa500; /* Active option background */
+    --sidebar-active-border-color: #ff4500; /* Active option border color */
+    --active-text-color: #101010; /* Text color for active option */
+}
+

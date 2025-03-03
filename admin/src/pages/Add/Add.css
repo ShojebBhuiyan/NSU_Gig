@@ -1,0 +1,156 @@
+.add {
+    width: 70%;
+    margin-left: max(5vw, 25px);
+    margin-top: 50px;
+    color: var(--light-text);
+    font-size: 16px;
+    background-color: var(--form-bg); /* Light background for the form */
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.add form {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.add-img-upload {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+}
+
+.add-img-upload img {
+    width: 120px;
+    transition: all 0.3s ease;
+    cursor: pointer;
+}
+
+/* Hover effect on image */
+.add-img-upload img:hover {
+    transform: scale(1.1);
+    filter: brightness(1.1);
+}
+
+.add-product-name .add-product-description {
+    width: max(40%, 280px);
+}
+
+.add-product-name input,
+.add-product-description textarea {
+    padding: 12px;
+    font-size: 14px;
+    border-radius: 6px;
+    border: 1px solid var(--border-color);
+    background-color: var(--input-bg);
+    color: var(--input-text);
+    transition: all 0.3s ease;
+}
+
+/* Focus effect for inputs and textareas */
+.add-product-name input:focus,
+.add-product-description textarea:focus {
+    outline: none;
+    border-color: var(--focus-border);
+    background-color: var(--input-focus-bg);
+}
+
+/* Input placeholder styling */
+.add-product-name input::placeholder,
+.add-product-description textarea::placeholder {
+    color: var(--placeholder-color);
+}
+
+/* Category & Price Section */
+.add-category-price {
+    display: flex;
+    gap: 30px;
+    flex-wrap: wrap; /* Ensure it wraps on small screens */
+}
+
+/* Style for select and input in category-price section */
+.add-category-price select,
+.add-category-price input {
+    max-width: 120px;
+    padding: 12px;
+    font-size: 14px;
+    border-radius: 6px;
+    border: 1px solid var(--border-color);
+    background-color: var(--input-bg);
+    color: var(--input-text);
+    transition: all 0.3s ease;
+}
+
+/* Hover effect for select and input */
+.add-category-price select:hover,
+.add-category-price input:hover {
+    background-color: var(--input-hover-bg);
+}
+
+/* Button Styling */
+.add-btn {
+    max-width: 120px;
+    padding: 12px 20px;
+    background-color: var(--btn-bg);
+    color: white;
+    border-radius: 8px;
+    border: none;
+    cursor: pointer;
+    font-size: 16px;
+    transition: all 0.3s ease;
+}
+
+/* Button Hover Effect */
+.add-btn:hover {
+    background-color: var(--btn-hover-bg);
+    transform: scale(1.05);
+}
+
+/* Label image styling for upload area */
+label img[src*="assets/upload_area"] {
+    filter: var(--upload);
+}
+
+/* Dark & Light Mode Variables */
+:root {
+    --form-bg: #f9f9f9; /* Light background for the form */
+    --input-bg: #f0f0f0; /* Input background */
+    --input-text: #333333; /* Text color in inputs */
+    --placeholder-color: #aaa; /* Placeholder text color */
+    --focus-border: #007bff; /* Border color on focus */
+    --input-focus-bg: #e6f1ff; /* Input background on focus */
+    --border-color: #ccc; /* Border color for inputs */
+    --btn-bg: #333333; /* Button background */
+    --btn-hover-bg: #444444; /* Button hover background */
+    --input-hover-bg: #e6e6e6; /* Hover background for select/input */
+    --upload: brightness(1) invert(0.8); /* Image upload filter */
+}
+
+/* Light Mode Styling */
+.lightcolors {
+    --form-bg: #ffffff; /* Light background for the form */
+    --input-bg: #ffffff; /* Input background */
+    --input-text: #101010; /* Text color in inputs */
+    --focus-border: #1e90ff; /* Border color on focus */
+    --input-focus-bg: #e0f7ff; /* Input background on focus */
+    --border-color: #ddd; /* Border color for inputs */
+    --btn-bg: #007bff; /* Button background */
+    --btn-hover-bg: #0056b3; /* Button hover background */
+    --input-hover-bg: #f1f1f1; /* Hover background for select/input */
+}
+
+/* Dark Mode Styling */
+.darkmode {
+    --form-bg: #333333; /* Dark background for the form */
+    --input-bg: #444444; /* Input background */
+    --input-text: #ffffff; /* Text color in inputs */
+    --focus-border: #00bfff; /* Border color on focus */
+    --input-focus-bg: #5e5e5e; /* Input background on focus */
+    --border-color: #666; /* Border color for inputs */
+    --btn-bg: #222222; /* Button background */
+    --btn-hover-bg: #444444; /* Button hover background */
+    --input-hover-bg: #555555; /* Hover background for select/input */
+}

@@ -1,0 +1,107 @@
+/* Header Styling */
+.header {
+    height: 34vw;
+    margin: 30px auto;
+    background: url('/header_img.jpg') no-repeat center center; /* Center the image */
+    background-size: cover; /* Cover the full width and height */
+    position: relative;
+}
+
+/* Center Header Contents */
+.header-contents {
+    position: absolute;
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* Center horizontally */
+    justify-content: center; /* Center vertically */
+    gap: 1.5vw;
+    width: 100%; /* Ensure contents stay centered */
+    height: 100%; /* Match the header's height for perfect centering */
+    text-align: center; /* Center the text */
+}
+
+/* Main Header Title */
+.header-contents h2 {
+    font-weight: 700; /* Bold for emphasis */
+    color: black; /* Default text color */
+    font-size: max(4.5vw, 24px); /* Large and responsive font size */
+    font-family: 'Poppins', sans-serif; /* Modern and elegant font */
+    line-height: 1.2; /* Adjust line spacing for readability */
+    margin: 0;
+}
+
+/* First Line of the Header Title */
+.header-contents h2 .line-one {
+    display: block; /* Ensure the text appears on its own line */
+    font-size: max(4.5vw, 26px); /* Large font size */
+    color: #ff7e5f; /* Bright gradient-like color */
+    letter-spacing: 1.5px; /* Spaced-out letters for effect */
+    text-transform: uppercase; /* Uppercase for emphasis */
+    text-shadow: 2px 2px 10px rgba(0, 0, 0, 0.3); /* Subtle shadow for clarity */
+}
+
+/* Second Line of the Header Title */
+.header-contents h2 .line-two {
+    display: block; /* Ensure the text appears on its own line */
+    font-size: max(4vw, 22px); /* Slightly smaller font size */
+    color: #333; /* Darker color for contrast */
+    font-style: italic; /* Italic for a softer touch */
+    letter-spacing: 1px; /* Subtle letter spacing */
+    text-shadow: 1px 1px 5px rgba(0, 0, 0, 0.2); /* Subtle shadow */
+}
+
+/* Styled Paragraph Text */
+.header-contents p {
+    color: #555; /* Neutral gray tone */
+    font-size: 1.2vw; /* Adjusted size for readability */
+    font-family: 'Roboto', sans-serif; /* Clean, modern font */
+    line-height: 1.6; /* Increased spacing for clarity */
+    margin: 10px 0; /* Add space below text */
+}
+
+/* Header Button Styling */
+.header-contents button {
+    border: none;
+    color: white;
+    font-weight: 500;
+    padding: 1vw 2.5vw;
+    background-color: #ff6347; /* Vibrant button color */
+    font-size: max(1.2vw, 14px); /* Responsive font size */
+    border-radius: 50px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); /* Add shadow to the button */
+    font-family: 'Poppins', sans-serif; /* Match with header font */
+    cursor: pointer;
+    transition: all 0.3s ease; /* Smooth hover transition */
+}
+
+.header-contents button:hover {
+    background-color: #ff4500; /* Darker shade on hover */
+    transform: scale(1.05); /* Slight enlargement */
+}
+
+/* Responsive Design */
+@media (max-width: 1050px) {
+    .header {
+        height: 40vw; /* Adjust height for smaller screens */
+    }
+    .header-contents h2 .line-one,
+    .header-contents h2 .line-two {
+        font-size: max(5vw, 22px); /* Adjust font size */
+    }
+}
+
+@media (max-width: 750px) {
+    .header {
+        height: 50vw; /* Further adjust height for small screens */
+    }
+    .header-contents h2 .line-one,
+    .header-contents h2 .line-two {
+        font-size: max(6vw, 18px); /* Adjust font size */
+    }
+    .header-contents p {
+        display: none; /* Hide paragraph text */
+    }
+    .header-contents button {
+        padding: 2vw 4vw;
+    }
+}

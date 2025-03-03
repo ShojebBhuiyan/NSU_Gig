@@ -1,0 +1,161 @@
+/* General Styling for Explore Menu */
+.explore-menu {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    padding: 20px;
+    max-width: 100%;
+}
+
+.explore-menu h1 {
+    color: #333;
+    font-weight: 600;
+    font-size: clamp(28px, 6vw, 36px);  /* Increased font size */
+    text-align: center;
+    margin-bottom: 10px;
+}
+
+.explore-menu-text {
+    max-width: 60%;
+    color: #707070;
+    font-size: clamp(16px, 4vw, 22px);  /* Increased font size */
+    margin: 0 auto;
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+/* Styling for the list of items in explore menu */
+.explore-menu-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));  /* Creates responsive grid with 180px min width */
+    gap: 30px;  /* Increased gap for better spacing */
+    overflow-x: hidden;
+    padding-bottom: 10px;
+    margin: 0 20px;
+}
+
+/* Make sure there are only 5 items per row */
+@media (min-width: 800px) {
+    .explore-menu-list {
+        grid-template-columns: repeat(5, 1fr);  /* Ensures 5 items in each row */
+    }
+}
+
+/* Styling for individual menu items */
+.explore-menu-list-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 15px;  /* Increased gap for better spacing */
+    cursor: pointer;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    text-align: center;
+    padding: 15px;  /* Increased padding */
+    border-radius: 10px;
+    background-color: #fff;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    transition: box-shadow 0.3s ease;
+}
+
+.explore-menu-list-item img {
+    width: 120px; /* Larger image size */
+    height: 120px;
+    border-radius: 50%;
+    object-fit: cover;
+    transition: transform 0.3s ease;
+    border: 3px solid transparent;
+}
+
+.explore-menu-list-item p {
+    margin-top: 12px;  /* Increased space between text and image */
+    font-size: 18px;  /* Increased font size */
+    color: #747474;
+    font-weight: 500;
+    transition: color 0.3s ease;
+}
+
+/* Hover Effect for Menu Items */
+.explore-menu-list-item:hover {
+    transform: scale(1.1); /* Slightly larger scale on hover */
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+}
+
+.explore-menu-list-item:hover img {
+    transform: scale(1.15); /* Larger scale for images on hover */
+    border-color: var(--highlight-color);
+}
+
+.explore-menu-list-item .active {
+    border: 4px solid var(--highlight-color);
+    padding: 2px;
+}
+
+/* Horizontal line for separation */
+hr {
+    margin: 20px 0;
+    height: 1px;
+    background-color: #e2e2e2;
+    border: none;
+}
+
+/* Dark mode adjustments */
+:root {
+    --text-color: #ffffff;
+    --background-color: #121212;
+    --highlight-color: #ff6347; /* Tomato color for food-related themes */
+}
+
+.lightcolors {
+    --text-color: #333333;
+    --background-color: #f9f9f9;
+    --highlight-color: #ff7f50; /* Lighter coral for light mode */
+}
+
+body {
+    background-color: var(--background-color);
+    color: var(--text-color);
+}
+
+/* Responsive design */
+@media (min-width: 800px) {
+    .explore-menu-list {
+        grid-template-columns: repeat(5, 1fr);  /* Ensures 5 items in each row */
+    }
+}
+
+@media (max-width: 1050px) {
+    .explore-menu h1 {
+        font-size: clamp(26px, 5vw, 34px);  /* Adjusted font size */
+    }
+
+    .explore-menu-text {
+        max-width: 80%;
+    }
+}
+
+@media (max-width: 750px) {
+    .explore-menu-list {
+        gap: 25px;  /* Adjusted gap for smaller screens */
+    }
+
+    .explore-menu-list-item img {
+        width: 100px; /* Larger image on small screens */
+        height: 100px;
+    }
+
+    .explore-menu-list-item p {
+        font-size: 18px; /* Increased font size */
+    }
+}
+
+@media (max-width: 500px) {
+    .explore-menu-list {
+        grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));  /* Adjust layout for very small screens */
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+
+    .explore-menu-list-item {
+        margin: 15px;
+    }
+}

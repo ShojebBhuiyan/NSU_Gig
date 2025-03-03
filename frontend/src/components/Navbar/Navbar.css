@@ -1,0 +1,291 @@
+/* General Navbar Styling */
+.navbar {
+    padding: 15px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: linear-gradient(135deg, #ff7f50, #ff6347, #f06292);
+    color: white;
+    transition: background-color 0.3s ease-in-out;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    z-index: 1000;
+    position: sticky;
+    top: 0;
+}
+
+/* Logo Styling */
+.navbar .logo {
+    width: 150px;
+    filter: var(--logos-filter);
+    transition: filter 0.3s ease-in-out;
+}
+
+/* Navbar Menu Styling */
+.navbar-menu {
+    display: flex;
+    list-style: none;
+    gap: 25px;
+    font-size: 18px;
+    color: var(--light-text);
+    transition: color 0.3s ease-in-out;
+}
+
+.navbar-menu li {
+    cursor: pointer;
+    position: relative;
+    padding-bottom: 2px;
+}
+
+.navbar-menu li:hover,
+.navbar-menu .active {
+    color: white;
+    border-bottom: 2px solid white;
+    transition: all 0.3s ease-in-out;
+}
+
+/* Navbar Right Section */
+.navbar-right {
+    display: flex;
+    align-items: center;
+    gap: 30px;
+}
+
+/* Search Bar Form */
+.search-bar-form {
+    display: flex;
+    align-items: center;
+    background-color: rgba(255, 255, 255, 0.1);
+    border-radius: 30px;
+    padding: 5px 15px;
+    transition: all 0.3s ease;
+}
+
+.search-bar-form input {
+    background: transparent;
+    border: none;
+    outline: none;
+    color: white;
+    font-size: 16px;
+    padding: 8px 12px;
+    width: 200px;
+    border-radius: 25px;
+    transition: width 0.3s ease, padding 0.3s ease;
+    font-family: Arial, sans-serif;
+}
+
+.search-bar-form input::placeholder {
+    color: white;
+    opacity: 0.7;
+}
+
+/* Expand the search input on hover or focus */
+.search-bar-form:hover input,
+.search-bar-form input:focus {
+    width: 250px;
+    padding: 8px 20px;
+}
+
+.search-bar-form button {
+    background-color: transparent;
+    border: none;
+    color: white;
+    cursor: pointer;
+    font-size: 18px;
+    margin-left: 10px;
+    transition: transform 0.3s ease;
+}
+
+.search-bar-form button:hover {
+    transform: scale(1.1);
+}
+
+/* Adding a subtle animation on search bar hover */
+.search-bar-form:hover {
+    background-color: rgba(255, 255, 255, 0.2);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+/* Updated Cart Icon */
+.navbar-cart-icon {
+    position: relative;
+    width: 24px;
+    height: 24px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--light-text);
+    font-size: 20px;
+    transition: transform 0.3s ease-in-out;
+}
+
+.navbar-cart-icon:hover {
+    transform: scale(1.2);
+}
+
+.navbar-cart-icon .cart-count {
+    position: absolute;
+    top: -8px;
+    right: -8px;
+    background-color: white;
+    color: #ff6347;
+    font-size: 12px;
+    border-radius: 50%;
+    min-width: 16px;
+    min-height: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+/* Buttons Styling */
+.navbar button {
+    background: white;
+    font-size: 15px;
+    color: #ff6347;
+    border: none;
+    padding: 10px 30px;
+    border-radius: 50px;
+    cursor: pointer;
+    transition: all 0.3s ease-in-out;
+}
+
+.navbar button:hover {
+    background-color: rgba(255, 99, 71, 0.2);
+    color: white;
+}
+
+/* Navbar Dropdown */
+.navbar-profile {
+    position: relative;
+    cursor: pointer;
+}
+
+.nav-profile-dropdown {
+    position: absolute;
+    display: none;
+    right: 0;
+    flex-direction: column;
+    gap: 10px;
+    background-color: var(--body-color);
+    color: var(--light-text);
+    padding: 12px 25px;
+    border-radius: 6px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    list-style: none;
+    transition: all 0.3s ease-in-out;
+    z-index: 1000;
+}
+
+.navbar-profile:hover .nav-profile-dropdown {
+    display: flex;
+}
+
+.nav-profile-dropdown li {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 5px;
+    border-radius: 4px;
+    transition: background-color 0.3s ease-in-out;
+}
+
+.nav-profile-dropdown li:hover {
+    background-color: rgba(255, 99, 71, 0.1);
+    color: tomato;
+}
+
+.nav-profile-dropdown img {
+    width: 20px;
+}
+
+/* Toggle Button Styling */
+#visual-toggle-button {
+    width: 37px;
+    height: 37px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid white;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: all 0.3s ease-in-out;
+    background-color: transparent;
+}
+
+.svgIcon-toggle {
+    width: 25px;
+}
+
+.moon-svg,
+.sun-svg {
+    position: absolute;
+    transition: all 0.3s;
+}
+
+.sun-svg {
+    opacity: 0;
+}
+
+.lightmode .sun-svg {
+    opacity: 1;
+    transform: rotate(180deg);
+}
+
+.lightmode .moon-svg {
+    opacity: 0;
+}
+
+/* Root Variables for Dark and Light Modes */
+:root {
+    --nav-color-one: linear-gradient(135deg, #ff7f50, #ff6347, #f06292);
+    --nav-color-two: #0d0618;
+    --body-color: #121212;
+    --light-text: #ffffff;
+    --border-color: #27272a;
+    --logos-filter: brightness(0) invert(1);
+}
+
+.lightcolors {
+    --nav-color-one: linear-gradient(135deg, #ffefed, #ffe4e1, #ffe0f0);
+    --nav-color-two: #f6f6f6;
+    --body-color: #ffffff;
+    --light-text: #101010;
+    --border-color: #ddd;
+    --logos-filter: none;
+}
+
+/* Responsive Adjustments */
+@media (max-width: 1050px) {
+    .navbar .logo {
+        width: 140px;
+    }
+    .navbar-menu {
+        gap: 20px;
+        font-size: 17px;
+    }
+    .navbar-right {
+        gap: 20px;
+    }
+}
+
+@media (max-width: 900px) {
+    .navbar .logo {
+        width: 120px;
+    }
+    .navbar-menu {
+        gap: 15px;
+        font-size: 16px;
+    }
+    .navbar-right button {
+        padding: 7px 20px;
+    }
+}
+
+@media (max-width: 750px) {
+    .navbar-menu {
+        display: none;
+    }
+}
