@@ -15,7 +15,7 @@ import { useAuth } from "../../context/AuthContext";
 import Colors from "@/constants/Colors";
 import { useColorScheme } from "@/components/useColorScheme";
 
-const API_URL = "http://localhost:5000/api";
+const API_URL = "https://food-delivery-backend-cul5.onrender.com/api";
 
 export default function ProfileScreen() {
   const { user, logout } = useAuth();

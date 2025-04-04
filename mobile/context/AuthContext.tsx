@@ -1,9 +1,9 @@
-import React, { createContext, useState, useContext, useEffect } from 'react';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import axios from 'axios';
-import { User } from '../types';
+import React, { createContext, useState, useContext, useEffect } from "react";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import axios from "axios";
+import { User } from "../types";
 
-const API_URL = 'http://localhost:5000/api';
+const API_URL = "https://food-delivery-backend-cul5.onrender.com/api";
 
 interface AuthContextType {
   user: User | null;
@@ -25,14 +25,14 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
   const loadUser = async () => {
     try {
-      const token = await AsyncStorage.getItem('token');
+      const token = await AsyncStorage.getItem("token");
       if (token) {
-        axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+        axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
         const response = await axios.get(`${API_URL}/users/profile`);
         setUser(response.data);
       }
     } catch (error) {
-      console.error('Error loading user:', error);
+      console.error("Error loading user:", error);
     } finally {
       setLoading(false);
     }
@@ -45,11 +45,11 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         password,
       });
       const { token, ...userData } = response.data;
-      await AsyncStorage.setItem('token', token);
-      axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+      await AsyncStorage.setItem("token", token);
+      axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
       setUser(userData);
     } catch (error) {
-      console.error('Login error:', error);
+      console.error("Login error:", error);
       throw error;
     }
   };
@@ -62,22 +62,22 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         password,
       });
       const { token, ...userData } = response.data;
-      await AsyncStorage.setItem('token', token);
-      axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+      await AsyncStorage.setItem("token", token);
+      axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
       setUser(userData);
     } catch (error) {
-      console.error('Registration error:', error);
+      console.error("Registration error:", error);
       throw error;
     }
   };
 
   const logout = async () => {
     try {
-      await AsyncStorage.removeItem('token');
-      delete axios.defaults.headers.common['Authorization'];
+      await AsyncStorage.removeItem("token");
+      delete axios.defaults.headers.common["Authorization"];
       setUser(null);
     } catch (error) {
-      console.error('Logout error:', error);
+      console.error("Logout error:", error);
       throw error;
     }
   };
@@ -92,7 +92,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 export function useAuth() {
   const context = useContext(AuthContext);
   if (context === undefined) {
-    throw new Error('useAuth must be used within an AuthProvider');
+    throw new Error("useAuth must be used within an AuthProvider");
   }
   return context;
-} 
+}
