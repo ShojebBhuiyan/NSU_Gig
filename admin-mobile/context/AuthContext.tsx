@@ -2,6 +2,7 @@ import React, { createContext, useState, useContext, useEffect } from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import axios from "axios";
 import { Admin } from "../types";
+import { FeatureFlags } from "../constants/FeatureFlags";
 
 const API_URL = "https://food-delivery-backend-cul5.onrender.com/api";
 
@@ -19,6 +20,19 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    if (FeatureFlags.DISABLE_AUTH) {
+      // When auth is disabled, set a mock admin user and token
+      const mockToken = "mock-token";
+      setAdmin({
+        _id: "mock-admin",
+        name: "Mock Admin",
+        email: "mock@admin.com",
+        token: mockToken,
+      });
+      axios.defaults.headers.common["Authorization"] = `Bearer ${mockToken}`;
+      setLoading(false);
+      return;
+    }
     loadAdmin();
   }, []);
 
@@ -38,6 +52,21 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   };
 
   const login = async (email: string, password: string) => {
+    if (FeatureFlags.DISABLE_AUTH) {
+      // When auth is disabled, set mock admin without API call
+      const mockToken = "mock-token";
+      const mockAdmin = {
+        _id: "mock-admin",
+        name: "Mock Admin",
+        email: email,
+        token: mockToken,
+      };
+      await AsyncStorage.setItem("adminToken", mockToken);
+      axios.defaults.headers.common["Authorization"] = `Bearer ${mockToken}`;
+      setAdmin(mockAdmin);
+      return;
+    }
+
     try {
       const response = await axios.post(`${API_URL}/admin/login`, {
         email,
@@ -54,6 +83,12 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   };
 
   const logout = async () => {
+    if (FeatureFlags.DISABLE_AUTH) {
+      // When auth is disabled, just clear the mock admin
+      setAdmin(null);
+      return;
+    }
+
     try {
       await AsyncStorage.removeItem("adminToken");
       delete axios.defaults.headers.common["Authorization"];

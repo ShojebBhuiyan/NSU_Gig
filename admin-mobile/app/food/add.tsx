@@ -18,16 +18,27 @@ import { Picker } from "@react-native-picker/picker";
 
 const API_URL = "https://food-delivery-backend-cul5.onrender.com/api";
 
+const fixedCategories: Category[] = [
+  { _id: "1", name: "Salad" },
+  { _id: "2", name: "Rolls" },
+  { _id: "3", name: "Desserts" },
+  { _id: "4", name: "Sandwich" },
+  { _id: "5", name: "Cake" },
+  { _id: "6", name: "Pure Veg" },
+  { _id: "7", name: "Pasta" },
+  { _id: "8", name: "Noodles" },
+];
+
 export default function AddFoodScreen() {
   const { admin } = useAuth();
   const [formData, setFormData] = useState<FoodFormData>({
     name: "",
     description: "",
     price: "",
-    category: "",
+    category: fixedCategories[0]._id,
     image: null,
   });
-  const [categories, setCategories] = useState<Category[]>([]);
+  const [categories, setCategories] = useState<Category[]>(fixedCategories);
   const [loading, setLoading] = useState(false);
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [imagePreview, setImagePreview] = useState<string | null>(null);
@@ -38,21 +49,8 @@ export default function AddFoodScreen() {
       return;
     }
 
-    fetchCategories();
+    setCategories(fixedCategories);
   }, [admin]);
-
-  const fetchCategories = async () => {
-    try {
-      const response = await axios.get(`${API_URL}/categories`);
-      setCategories(response.data);
-      if (response.data.length > 0) {
-        setFormData((prev) => ({ ...prev, category: response.data[0]._id }));
-      }
-    } catch (error) {
-      console.error("Error fetching categories:", error);
-      Alert.alert("Error", "Failed to fetch categories");
-    }
-  };
 
   const validateForm = () => {
     const newErrors: Record<string, string> = {};
@@ -125,7 +123,7 @@ export default function AddFoodScreen() {
         price: parseFloat(formData.price),
       };
 
-      await axios.post(`${API_URL}/foods`, foodData);
+      await axios.post(`${API_URL}/food/add`, foodData);
 
       Alert.alert("Success", "Food item added successfully", [
         {

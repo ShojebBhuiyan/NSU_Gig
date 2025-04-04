@@ -11,21 +11,14 @@ export interface Food {
 
 export interface Order {
   _id: string;
-  user: {
-    _id: string;
-    name: string;
-    email: string;
-  };
-  items: {
-    food: Food;
-    quantity: number;
-    _id: string;
-  }[];
-  totalAmount: number;
-  status: 'pending' | 'confirmed' | 'delivered';
-  createdAt: string;
-  address: string;
-  phone: string;
+  userId: string;
+  items: any[]; // Will handle the specific item structure in the component
+  amount: number;
+  status: string;
+  date: string;
+  address: any; // Will handle the specific address structure in the component
+  payment: boolean;
+  __v: number;
 }
 
 export interface Admin {

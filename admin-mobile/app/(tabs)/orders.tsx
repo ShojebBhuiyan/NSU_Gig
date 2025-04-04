@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { View, StyleSheet, FlatList, Alert } from "react-native";
+import { View, StyleSheet, FlatList, Alert, ScrollView } from "react-native";
 import {
   Card,
   Title,
@@ -37,8 +37,14 @@ export default function OrdersScreen() {
   const fetchOrders = async () => {
     try {
       setLoading(true);
-      const response = await axios.get(`${API_URL}/orders`);
-      setOrders(response.data);
+      const response = await axios.get(`${API_URL}/order/list`);
+      if (response.data && response.data.success) {
+        setOrders(response.data.data);
+        console.log("Orders data:", response.data.data);
+      } else {
+        setOrders(response.data);
+        console.log("Orders data:", response.data);
+      }
     } catch (error) {
       console.error("Error fetching orders:", error);
     } finally {
@@ -46,12 +52,11 @@ export default function OrdersScreen() {
     }
   };
 
-  const updateOrderStatus = async (
-    orderId: string,
-    status: "pending" | "confirmed" | "delivered"
-  ) => {
+  const updateOrderStatus = async (orderId: string, status: string) => {
     try {
-      await axios.put(`${API_URL}/orders/${orderId}`, { status });
+      await axios.post(`${API_URL}/order/status`, {
+        data: { orderId, status },
+      });
       setOrders(
         orders.map((order) =>
           order._id === orderId ? { ...order, status } : order
@@ -65,11 +70,11 @@ export default function OrdersScreen() {
 
   const getStatusColor = (status: string) => {
     switch (status) {
-      case "pending":
+      case "Food Processing":
         return Colors[colorScheme ?? "light"].warning;
-      case "confirmed":
+      case "Out for delivery":
         return Colors[colorScheme ?? "light"].info;
-      case "delivered":
+      case "Delivered":
         return Colors[colorScheme ?? "light"].success;
       default:
         return Colors[colorScheme ?? "light"].primary;
@@ -78,23 +83,27 @@ export default function OrdersScreen() {
 
   const filteredOrders = orders
     .filter((order) => (statusFilter ? order.status === statusFilter : true))
-    .filter((order) =>
-      searchQuery
-        ? order._id.includes(searchQuery) ||
-          order.user.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-          order.user.email.toLowerCase().includes(searchQuery.toLowerCase())
-        : true
-    )
-    .sort(
-      (a, b) =>
-        new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
-    );
+    .filter((order) => (searchQuery ? order._id.includes(searchQuery) : true))
+    .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
 
   const renderOrderItem = ({ item }: { item: Order }) => (
-    <Card style={styles.card} onPress={() => router.push(`/order/${item._id}`)}>
+    <Card
+      style={[
+        styles.card,
+        { backgroundColor: Colors[colorScheme ?? "light"].cardBackground },
+      ]}
+      // onPress={() => router.push(`/order/${item._id}`)}
+    >
       <Card.Content>
         <View style={styles.orderHeader}>
-          <Title style={styles.orderId}>Order #{item._id.slice(-6)}</Title>
+          <Title
+            style={[
+              styles.orderId,
+              { color: Colors[colorScheme ?? "light"].text },
+            ]}
+          >
+            Order #{item._id.slice(-6)}
+          </Title>
           <Chip
             style={[
               styles.statusChip,
@@ -106,37 +115,64 @@ export default function OrdersScreen() {
           </Chip>
         </View>
 
-        <Paragraph style={styles.date}>
-          Date: {new Date(item.createdAt).toLocaleString()}
+        <Paragraph
+          style={[styles.date, { color: Colors[colorScheme ?? "light"].text }]}
+        >
+          Date: {new Date(item.date).toLocaleString()}
         </Paragraph>
 
-        <Paragraph style={styles.customer}>
-          Customer: {item.user.name}
+        <Paragraph
+          style={[
+            styles.customer,
+            { color: Colors[colorScheme ?? "light"].text },
+          ]}
+        >
+          Customer: {item.address.firstName} {item.address.lastName}
         </Paragraph>
 
-        <Paragraph style={styles.items}>Items: {item.items.length}</Paragraph>
+        <Paragraph
+          style={[styles.items, { color: Colors[colorScheme ?? "light"].text }]}
+        >
+          Items: {item.items.map((i) => i.name).join(", ")}
+        </Paragraph>
+
+        <Paragraph
+          style={[
+            styles.address,
+            { color: Colors[colorScheme ?? "light"].text },
+          ]}
+        >
+          Address: {item.address.street}, {item.address.city},{" "}
+          {item.address.state}, {item.address.zipcode}, {item.address.country}
+        </Paragraph>
+
+        <Paragraph
+          style={[styles.phone, { color: Colors[colorScheme ?? "light"].text }]}
+        >
+          Phone: {item.address.phone}
+        </Paragraph>
 
         <Paragraph style={styles.total}>
-          Total: ${item.totalAmount.toFixed(2)}
+          Total: ${item.amount.toFixed(2)}
         </Paragraph>
       </Card.Content>
 
       <Card.Actions>
-        {item.status === "pending" && (
+        {item.status === "Food Processing" && (
           <Button
             mode="contained"
-            onPress={() => updateOrderStatus(item._id, "confirmed")}
+            onPress={() => updateOrderStatus(item._id, "Out for delivery")}
             style={styles.actionButton}
             buttonColor={Colors[colorScheme ?? "light"].info}
           >
-            Confirm
+            Mark Out for Delivery
           </Button>
         )}
 
-        {item.status === "confirmed" && (
+        {item.status === "Out for delivery" && (
           <Button
             mode="contained"
-            onPress={() => updateOrderStatus(item._id, "delivered")}
+            onPress={() => updateOrderStatus(item._id, "Delivered")}
             style={styles.actionButton}
             buttonColor={Colors[colorScheme ?? "light"].success}
           >
@@ -144,21 +180,27 @@ export default function OrdersScreen() {
           </Button>
         )}
 
-        <Button
+        {/* <Button
           mode="outlined"
           onPress={() => router.push(`/order/${item._id}`)}
           style={styles.viewButton}
           textColor={Colors[colorScheme ?? "light"].primary}
         >
           View Details
-        </Button>
+        </Button> */}
       </Card.Actions>
     </Card>
   );
 
   if (loading) {
     return (
-      <View style={[styles.container, styles.centered]}>
+      <View
+        style={[
+          styles.container,
+          styles.centered,
+          { backgroundColor: Colors[colorScheme ?? "light"].background },
+        ]}
+      >
         <ActivityIndicator
           size="large"
           color={Colors[colorScheme ?? "light"].primary}
@@ -168,51 +210,79 @@ export default function OrdersScreen() {
   }
 
   return (
-    <View style={styles.container}>
+    <View
+      style={[
+        styles.container,
+        { backgroundColor: Colors[colorScheme ?? "light"].background },
+      ]}
+    >
       <Searchbar
         placeholder="Search orders..."
         onChangeText={setSearchQuery}
         value={searchQuery}
-        style={styles.searchBar}
-        inputStyle={styles.searchInput}
+        style={[
+          styles.searchBar,
+          { backgroundColor: Colors[colorScheme ?? "light"].cardBackground },
+        ]}
+        inputStyle={[
+          styles.searchInput,
+          { color: Colors[colorScheme ?? "light"].text },
+        ]}
         iconColor={Colors[colorScheme ?? "light"].primary}
         theme={{ colors: { primary: Colors[colorScheme ?? "light"].primary } }}
       />
 
-      <View style={styles.filterContainer}>
+      <ScrollView
+        horizontal
+        showsHorizontalScrollIndicator={false}
+        style={styles.filterContainer}
+        contentContainerStyle={{ flexDirection: "row" }}
+      >
         <Chip
           selected={statusFilter === null}
           onPress={() => setStatusFilter(null)}
-          style={styles.filterChip}
+          style={[
+            styles.filterChip,
+            { backgroundColor: Colors[colorScheme ?? "light"].cardBackground },
+          ]}
           selectedColor={Colors[colorScheme ?? "light"].primary}
         >
           All
         </Chip>
         <Chip
-          selected={statusFilter === "pending"}
-          onPress={() => setStatusFilter("pending")}
-          style={styles.filterChip}
+          selected={statusFilter === "Food Processing"}
+          onPress={() => setStatusFilter("Food Processing")}
+          style={[
+            styles.filterChip,
+            { backgroundColor: Colors[colorScheme ?? "light"].cardBackground },
+          ]}
           selectedColor={Colors[colorScheme ?? "light"].warning}
         >
-          Pending
+          Food Processing
         </Chip>
         <Chip
-          selected={statusFilter === "confirmed"}
-          onPress={() => setStatusFilter("confirmed")}
-          style={styles.filterChip}
+          selected={statusFilter === "Out for delivery"}
+          onPress={() => setStatusFilter("Out for delivery")}
+          style={[
+            styles.filterChip,
+            { backgroundColor: Colors[colorScheme ?? "light"].cardBackground },
+          ]}
           selectedColor={Colors[colorScheme ?? "light"].info}
         >
-          Confirmed
+          Out for delivery
         </Chip>
         <Chip
-          selected={statusFilter === "delivered"}
-          onPress={() => setStatusFilter("delivered")}
-          style={styles.filterChip}
+          selected={statusFilter === "Delivered"}
+          onPress={() => setStatusFilter("Delivered")}
+          style={[
+            styles.filterChip,
+            { backgroundColor: Colors[colorScheme ?? "light"].cardBackground },
+          ]}
           selectedColor={Colors[colorScheme ?? "light"].success}
         >
           Delivered
         </Chip>
-      </View>
+      </ScrollView>
 
       <FlatList
         data={filteredOrders}
@@ -229,7 +299,6 @@ export default function OrdersScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#000000",
   },
   centered: {
     justifyContent: "center",
@@ -238,10 +307,9 @@ const styles = StyleSheet.create({
   searchBar: {
     margin: 16,
     marginBottom: 8,
-    backgroundColor: "#1A1A1A",
   },
   searchInput: {
-    color: "#FFFFFF",
+    // Empty style to be overridden with dynamic color
   },
   filterContainer: {
     flexDirection: "row",
@@ -250,14 +318,12 @@ const styles = StyleSheet.create({
   },
   filterChip: {
     marginRight: 8,
-    backgroundColor: "#1A1A1A",
   },
   list: {
     padding: 16,
   },
   card: {
     marginBottom: 16,
-    backgroundColor: "#1A1A1A",
   },
   orderHeader: {
     flexDirection: "row",
@@ -266,7 +332,6 @@ const styles = StyleSheet.create({
     marginBottom: 8,
   },
   orderId: {
-    color: "#FFFFFF",
     fontSize: 18,
   },
   statusChip: {
@@ -277,17 +342,22 @@ const styles = StyleSheet.create({
     color: "#FFFFFF",
   },
   date: {
-    color: "#CCCCCC",
     fontSize: 14,
     marginBottom: 4,
   },
   customer: {
-    color: "#FFFFFF",
     fontSize: 14,
     marginBottom: 4,
   },
   items: {
-    color: "#CCCCCC",
+    fontSize: 14,
+    marginBottom: 4,
+  },
+  address: {
+    fontSize: 14,
+    marginBottom: 4,
+  },
+  phone: {
     fontSize: 14,
     marginBottom: 4,
   },

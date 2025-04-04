@@ -19,6 +19,17 @@ import { Picker } from "@react-native-picker/picker";
 
 const API_URL = "https://food-delivery-backend-cul5.onrender.com/api";
 
+const fixedCategories: Category[] = [
+  { _id: "1", name: "Salad" },
+  { _id: "2", name: "Rolls" },
+  { _id: "3", name: "Desserts" },
+  { _id: "4", name: "Sandwich" },
+  { _id: "5", name: "Cake" },
+  { _id: "6", name: "Pure Veg" },
+  { _id: "7", name: "Pasta" },
+  { _id: "8", name: "Noodles" },
+];
+
 export default function EditFoodScreen() {
   const { id } = useLocalSearchParams();
   const { admin } = useAuth();
@@ -29,7 +40,7 @@ export default function EditFoodScreen() {
     category: "",
     image: null,
   });
-  const [categories, setCategories] = useState<Category[]>([]);
+  const [categories, setCategories] = useState<Category[]>(fixedCategories);
   const [loading, setLoading] = useState(true);
   const [submitting, setSubmitting] = useState(false);
   const [errors, setErrors] = useState<Record<string, string>>({});
@@ -41,7 +52,8 @@ export default function EditFoodScreen() {
       return;
     }
 
-    Promise.all([fetchFood(), fetchCategories()]);
+    fetchFood();
+    setCategories(fixedCategories);
   }, [admin, id]);
 
   const fetchFood = async () => {
@@ -66,16 +78,6 @@ export default function EditFoodScreen() {
       router.back();
     } finally {
       setLoading(false);
-    }
-  };
-
-  const fetchCategories = async () => {
-    try {
-      const response = await axios.get(`${API_URL}/categories`);
-      setCategories(response.data);
-    } catch (error) {
-      console.error("Error fetching categories:", error);
-      Alert.alert("Error", "Failed to fetch categories");
     }
   };
 

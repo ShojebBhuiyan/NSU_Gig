@@ -12,7 +12,12 @@ export default function Index() {
 
   if (loading) {
     return (
-      <View style={styles.container}>
+      <View
+        style={[
+          styles.container,
+          { backgroundColor: Colors[colorScheme ?? "light"].background },
+        ]}
+      >
         <ActivityIndicator
           size="large"
           color={Colors[colorScheme ?? "light"].primary}
@@ -33,6 +38,5 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
-    backgroundColor: "#000000",
   },
 });

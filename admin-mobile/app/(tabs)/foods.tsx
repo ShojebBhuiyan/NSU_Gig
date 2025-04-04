@@ -36,8 +36,14 @@ export default function FoodsScreen() {
   const fetchFoods = async () => {
     try {
       setLoading(true);
-      const response = await axios.get(`${API_URL}/foods`);
-      setFoods(response.data);
+      const response = await axios.get(`${API_URL}/food/list`);
+      if (response.data && response.data.success) {
+        setFoods(response.data.data);
+        console.log("Foods data:", response.data.data);
+      } else {
+        setFoods(response.data);
+        console.log("Foods data:", response.data);
+      }
     } catch (error) {
       console.error("Error fetching foods:", error);
     } finally {
@@ -59,7 +65,9 @@ export default function FoodsScreen() {
           style: "destructive",
           onPress: async () => {
             try {
-              await axios.delete(`${API_URL}/foods/${id}`);
+              await axios.post(`${API_URL}/food/remove`, {
+                data: { id },
+              });
               setFoods(foods.filter((food) => food._id !== id));
             } catch (error) {
               console.error("Error deleting food:", error);
@@ -80,14 +88,40 @@ export default function FoodsScreen() {
     : foods;
 
   const renderFoodItem = ({ item }: { item: Food }) => (
-    <Card style={styles.card}>
+    <Card
+      style={[
+        styles.card,
+        { backgroundColor: Colors[colorScheme ?? "light"].cardBackground },
+      ]}
+    >
       <Card.Content>
-        <Title style={styles.cardTitle}>{item.name}</Title>
-        <Paragraph style={styles.description}>{item.description}</Paragraph>
+        <Title
+          style={[
+            styles.cardTitle,
+            { color: Colors[colorScheme ?? "light"].text },
+          ]}
+        >
+          {item.name}
+        </Title>
+        <Paragraph
+          style={[
+            styles.description,
+            { color: Colors[colorScheme ?? "light"].text },
+          ]}
+        >
+          {item.description}
+        </Paragraph>
         <Paragraph style={styles.price}>
           Price: ${item.price.toFixed(2)}
         </Paragraph>
-        <Paragraph style={styles.category}>Category: {item.category}</Paragraph>
+        <Paragraph
+          style={[
+            styles.category,
+            { color: Colors[colorScheme ?? "light"].text },
+          ]}
+        >
+          Category: {item.category}
+        </Paragraph>
       </Card.Content>
       <Card.Actions>
         <Button
@@ -122,13 +156,24 @@ export default function FoodsScreen() {
   }
 
   return (
-    <View style={styles.container}>
+    <View
+      style={[
+        styles.container,
+        { backgroundColor: Colors[colorScheme ?? "light"].background },
+      ]}
+    >
       <Searchbar
         placeholder="Search foods..."
         onChangeText={setSearchQuery}
         value={searchQuery}
-        style={styles.searchBar}
-        inputStyle={styles.searchInput}
+        style={[
+          styles.searchBar,
+          { backgroundColor: Colors[colorScheme ?? "light"].cardBackground },
+        ]}
+        inputStyle={[
+          styles.searchInput,
+          { color: Colors[colorScheme ?? "light"].text },
+        ]}
         iconColor={Colors[colorScheme ?? "light"].primary}
         theme={{ colors: { primary: Colors[colorScheme ?? "light"].primary } }}
       />
@@ -158,7 +203,6 @@ export default function FoodsScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#000000",
   },
   centered: {
     justifyContent: "center",
@@ -166,23 +210,20 @@ const styles = StyleSheet.create({
   },
   searchBar: {
     margin: 16,
-    backgroundColor: "#1A1A1A",
   },
   searchInput: {
-    color: "#FFFFFF",
+    // Empty style to be overridden with dynamic color
   },
   list: {
     padding: 16,
   },
   card: {
     marginBottom: 16,
-    backgroundColor: "#1A1A1A",
   },
   cardTitle: {
-    color: "#FFFFFF",
+    fontWeight: "bold",
   },
   description: {
-    color: "#CCCCCC",
     marginBottom: 8,
   },
   price: {
@@ -190,7 +231,6 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
   },
   category: {
-    color: "#CCCCCC",
     fontStyle: "italic",
   },
   actionButton: {
