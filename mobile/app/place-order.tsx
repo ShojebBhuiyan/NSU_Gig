@@ -20,14 +20,15 @@ const API_URL = "https://food-delivery-backend-cul5.onrender.com/api";
 export default function PlaceOrderScreen() {
   const { items, getTotalAmount, clearCart } = useCart();
   const { user } = useAuth();
-  const [address, setAddress] = useState("");
+  const [customerName, setCustomerName] = useState("");
   const [phone, setPhone] = useState("");
+  const [address, setAddress] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const colorScheme = useColorScheme();
 
   const handlePlaceOrder = async () => {
-    if (!address.trim() || !phone.trim()) {
+    if (!customerName.trim() || !phone.trim() || !address.trim()) {
       setError("Please fill in all fields");
       return;
     }
@@ -41,14 +42,16 @@ export default function PlaceOrderScreen() {
           food: item._id,
           quantity: item.quantity,
         })),
-        address,
+        customerName,
         phone,
+        address,
         totalAmount: getTotalAmount(),
       };
 
-      await axios.post(`${API_URL}/orders`, orderData);
+      const response = await axios.post(`${API_URL}/order/place`, orderData);
+      console.log(response.data);
       clearCart();
-      router.push("/(tabs)/profile");
+      router.replace("/(tabs)");
     } catch (error) {
       console.error("Error placing order:", error);
       setError("Failed to place order. Please try again.");
@@ -59,7 +62,7 @@ export default function PlaceOrderScreen() {
 
   return (
     <ScrollView style={styles.container}>
-      <Title style={styles.title}>Order Summary</Title>
+      <Title style={styles.title}>Place Order</Title>
 
       {items.map((item) => (
         <Card key={item._id} style={styles.itemCard}>
@@ -69,7 +72,7 @@ export default function PlaceOrderScreen() {
               Quantity: {item.quantity}
             </Paragraph>
             <Paragraph style={styles.price}>
-              Price: ${(item.price * item.quantity).toFixed(2)}
+              ${(item.price * item.quantity).toFixed(2)}
             </Paragraph>
           </Card.Content>
         </Card>
@@ -78,19 +81,17 @@ export default function PlaceOrderScreen() {
       <Card style={styles.totalCard}>
         <Card.Content>
           <Title style={styles.totalAmount}>
-            Total Amount: ${getTotalAmount().toFixed(2)}
+            Total: ${getTotalAmount().toFixed(2)}
           </Title>
         </Card.Content>
       </Card>
 
       <View style={styles.form}>
         <TextInput
-          label="Delivery Address"
-          value={address}
-          onChangeText={setAddress}
+          label="Customer Name"
+          value={customerName}
+          onChangeText={setCustomerName}
           mode="outlined"
-          multiline
-          numberOfLines={3}
           style={styles.input}
           theme={{
             colors: { primary: Colors[colorScheme ?? "light"].primary },
@@ -105,6 +106,21 @@ export default function PlaceOrderScreen() {
           onChangeText={setPhone}
           mode="outlined"
           keyboardType="phone-pad"
+          style={styles.input}
+          theme={{
+            colors: { primary: Colors[colorScheme ?? "light"].primary },
+          }}
+          textColor="#FFFFFF"
+          outlineColor="#333333"
+        />
+
+        <TextInput
+          label="Delivery Address"
+          value={address}
+          onChangeText={setAddress}
+          mode="outlined"
+          multiline
+          numberOfLines={3}
           style={styles.input}
           theme={{
             colors: { primary: Colors[colorScheme ?? "light"].primary },

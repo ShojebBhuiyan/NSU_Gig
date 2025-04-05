@@ -40,7 +40,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
   const login = async (email: string, password: string) => {
     try {
-      const response = await axios.post(`${API_URL}/users/login`, {
+      const response = await axios.post(`${API_URL}/user/login`, {
         email,
         password,
       });
@@ -56,7 +56,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
   const register = async (name: string, email: string, password: string) => {
     try {
-      const response = await axios.post(`${API_URL}/users/register`, {
+      const response = await axios.post(`${API_URL}/user/register`, {
         name,
         email,
         password,

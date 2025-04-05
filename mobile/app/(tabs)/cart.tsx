@@ -14,11 +14,11 @@ export default function CartScreen() {
   const colorScheme = useColorScheme();
 
   const handleCheckout = () => {
-    if (!user) {
-      router.push("/(auth)/login");
-      return;
-    }
-    router.push("place-order");
+    // if (!user) {
+    //   router.push("/(auth)/login");
+    //   return;
+    // }
+    router.push("/place-order");
   };
 
   const renderCartItem = ({ item }: { item: CartItem }) => (
