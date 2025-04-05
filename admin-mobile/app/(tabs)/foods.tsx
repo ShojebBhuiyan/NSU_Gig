@@ -124,14 +124,14 @@ export default function FoodsScreen() {
         </Paragraph>
       </Card.Content>
       <Card.Actions>
-        <Button
+        {/* <Button
           mode="outlined"
           onPress={() => router.push(`/food/edit/${item._id}`)}
           style={styles.actionButton}
           textColor={Colors[colorScheme ?? "light"].primary}
         >
           Edit
-        </Button>
+        </Button> */}
         <Button
           mode="outlined"
           onPress={() => handleDeleteFood(item._id)}
